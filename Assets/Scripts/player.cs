@@ -30,7 +30,7 @@ public class player : MonoBehaviour
         anim.SetBool("jump", false);
         anim.SetBool("idle", false);
 
-        if (isJumping == false) && (walk = false);
+        if (isJumping == false && (walk = false))
         {
             anim.SetBool("idle", true);
         }
@@ -44,13 +44,13 @@ public class player : MonoBehaviour
 
 
 
-        if (Input.GetKey("space") && (touchingPlatform==true) )
+        if (Input.GetKey("space") && (touchingPlatform == true))
         {
             //transform.position = new Vector2(transform.position.x, transform.position.y + (speed * Time.deltaTime));
             rb.velocity = new Vector2(0, 7);
-           
+
             anim.SetBool("jump", true);
-            isJumping=true;
+            isJumping = true;
         }
 
 
@@ -81,7 +81,7 @@ public class player : MonoBehaviour
             anim.SetBool("idle", false);
         }
 
-        if( isJumping == true )
+        if (isJumping == true)
         {
             anim.SetBool("jump", true);
         }
@@ -101,11 +101,12 @@ public class player : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-
+     
         if (collision.gameObject.tag == "platform")
         {
             touchingPlatform = false;
         }
     }
+
 } 
 
