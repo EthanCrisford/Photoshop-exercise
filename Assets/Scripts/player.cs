@@ -1,17 +1,20 @@
+using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class player : MonoBehaviour
+public class Player : MonoBehaviour
 {
     Rigidbody2D rb;
     public int speed;
     bool touchingPlatform = false;
     private Animator anim;
     bool isWalking;
-    bool walk;
     bool idle;
     bool isJumping;
+    HelperScript helper;
+    public GameObject bullet; // prefab
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +24,8 @@ public class player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         isJumping = false;
+
+        helper = gameObject.AddComponent<HelperScript>();
     }
 
     // Update is called once per frame
@@ -30,7 +35,7 @@ public class player : MonoBehaviour
         anim.SetBool("jump", false);
         anim.SetBool("idle", false);
 
-        if (isJumping == false && (walk = false))
+        if (isJumping == false && (isWalking = false))
         {
             anim.SetBool("idle", true);
         }
@@ -47,7 +52,7 @@ public class player : MonoBehaviour
         if (Input.GetKey("space") && (touchingPlatform == true))
         {
             //transform.position = new Vector2(transform.position.x, transform.position.y + (speed * Time.deltaTime));
-            rb.velocity = new Vector2(0, 7);
+            rb.velocity = new Vector2(0, 11);
 
             anim.SetBool("jump", true);
             isJumping = true;
@@ -62,6 +67,17 @@ public class player : MonoBehaviour
             //anim.SetBool("idle", false);
         }
 
+        if( Input.GetMouseButtonDown (0))
+        {
+            Rigidbody2D rb;
+            GameObject obj = Instantiate(bullet, transform.position, transform.rotation);
+
+            rb = obj.GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(10,0);
+            if (Input.GetKey("a"))
+                rb.velocity = new Vector2(-10,0);
+            
+        }
 
 
         if (Input.GetKey("a"))
@@ -70,6 +86,7 @@ public class player : MonoBehaviour
             rb.velocity = new Vector2(-5, 0);
             anim.SetBool("walk", true);
             anim.SetBool("idle", false);
+            helper.FlipObject(true);
         }
 
 
@@ -79,6 +96,7 @@ public class player : MonoBehaviour
             rb.velocity = new Vector2(5, 0);
             anim.SetBool("walk", true);
             anim.SetBool("idle", false);
+            helper.FlipObject(false);
         }
 
         if (isJumping == true)
@@ -89,6 +107,12 @@ public class player : MonoBehaviour
         print("isjumping=" + isJumping);
 
     }
+
+    //public void MethodFromHelperScript()
+   // {
+       // print("H");
+        //Console.WriteLine("Hello World"); 
+  //  }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -101,7 +125,7 @@ public class player : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-     
+
         if (collision.gameObject.tag == "platform")
         {
             touchingPlatform = false;
