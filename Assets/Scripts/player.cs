@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Security;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
     bool isWalking;
     bool idle;
     bool isJumping;
+    bool Jump;
     HelperScript helper;
     public GameObject bullet; // prefab
 
@@ -31,6 +33,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         anim.SetBool("walk", false);
         anim.SetBool("jump", false);
         anim.SetBool("idle", false);
@@ -104,17 +107,12 @@ public class Player : MonoBehaviour
             anim.SetBool("jump", true);
         }
 
-        helper.DoRayCollisionCheck();
-        //helper.
-
-
+        bool groundHit = helper.DoRayCollisionCheck();
+        if (groundHit == true)
+        {
+            
+        }
     }
-
-    //public void MethodFromHelperScript()
-    // {
-    // print("H");
-    //Console.WriteLine("Hello World"); 
-    //  }
 
     void OnCollisionEnter2D(Collision2D collision)
     {

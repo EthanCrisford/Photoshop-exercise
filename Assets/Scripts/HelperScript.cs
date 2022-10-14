@@ -4,39 +4,52 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Security;
 using System.Runtime.InteropServices;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class HelperScript : MonoBehaviour
 {
+    float distance;
+    int groundLayer;
+
     LayerMask groundLayerMask;
-    bool IsGrounded = false;
+    bool IsGrounded()
+    {
+        Vector2 position = transform.position;
+        Vector2 direction = Vector2.down;
+        float distance = 1.0f;
+
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, distance, groundLayer);
+        if (hit.collider != null)
+        {
+            return true;
+        }
+
+        return false; 
+    }
     
     void Start()
     {
         groundLayerMask = LayerMask.GetMask("ground");
     }
 
-    public void DoRayCollisionCheck()
+    public bool DoRayCollisionCheck()
     {
         float rayLength = 1.0f;
 
         //cast a ray downwards of length 1
         RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, rayLength, groundLayerMask);
 
-        Color hitColor = Color.white;
-
-        if (hit.collider != null)
+        if (hit.collider == null)
         {
-            Debug.DrawRay(transform.position, -Vector2.up * rayLength, hitColor);
-            hitColor = Color.green;
+            Debug.DrawRay(transform.position, -Vector2.up * rayLength, Color.black);
+            
+            return false;
         }
-        else
-        {
-            Debug.DrawRay(transform.position, -Vector2.up * rayLength, hitColor);
-            hitColor = Color.red;
-            IsGrounded = true; 
-        }
+        Debug.DrawRay(transform.position, -Vector2.up * rayLength, Color.red);
+        
+        return true;
     }
 
     public void FlipObject(bool flip)
