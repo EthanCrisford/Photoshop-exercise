@@ -104,15 +104,17 @@ public class Player : MonoBehaviour
             anim.SetBool("jump", true);
         }
 
-        print("isjumping=" + isJumping);
+        helper.DoRayCollisionCheck();
+        //helper.
+
 
     }
 
     //public void MethodFromHelperScript()
-   // {
-       // print("H");
-        //Console.WriteLine("Hello World"); 
-  //  }
+    // {
+    // print("H");
+    //Console.WriteLine("Hello World"); 
+    //  }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
