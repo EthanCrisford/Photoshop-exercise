@@ -11,10 +11,11 @@ public class Player : MonoBehaviour
     public int speed;
     bool touchingPlatform = false;
     private Animator anim;
-    bool isWalking;
     bool idle;
     bool isJumping;
     bool Jump;
+    bool walk;
+    bool isWalking; 
     HelperScript helper;
     public GameObject bullet; // prefab
 
@@ -38,27 +39,31 @@ public class Player : MonoBehaviour
         anim.SetBool("jump", false);
         anim.SetBool("idle", false);
 
-        if (isJumping == false && (isWalking = false))
+        if (isJumping == false && (walk = false) && (touchingPlatform == true)) 
         {
             anim.SetBool("idle", true);
         }
 
         // check for player landing
-        if (isJumping && (touchingPlatform == true) && (rb.velocity.y < 0))
+        if (isJumping && (touchingPlatform == true) && (rb.velocity.y < 0) && (isWalking == false)) 
         {
-            isJumping = false;
+            isJumping = false; 
             anim.SetBool("idle", true);
         }
-
-
 
         if (Input.GetKey("space") && (touchingPlatform == true))
         {
             //transform.position = new Vector2(transform.position.x, transform.position.y + (speed * Time.deltaTime));
-            rb.velocity = new Vector2(0, 11);
-
+            rb.velocity = new Vector2(0, 9); 
             anim.SetBool("jump", true);
             isJumping = true;
+        }
+
+        // player stopped walking check
+        if (isWalking == false && (touchingPlatform == true) && (rb.velocity.x < 0)) 
+        {
+            anim.SetBool("idle", true);
+            isWalking = false; 
         }
 
 
@@ -131,6 +136,5 @@ public class Player : MonoBehaviour
             touchingPlatform = false;
         }
     }
-
 } 
 

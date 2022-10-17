@@ -10,6 +10,22 @@ public class Enemy : MonoBehaviour
     float playerx, playery;
     float enemyx, enemyy;
     public GameObject player;
+    Rigidbody2D enemyRigidBody2D;
+    public int UnitsToMove = 5;
+    public float EnemySpeed = 25;
+    public bool _isFacingRight;
+    private float _startPos;
+    private float _endPos;
+
+    public bool _moveRight = true;
+
+    public void Awake()
+    {
+        enemyRigidBody2D = GetComponent<Rigidbody2D>();
+        _startPos = transform.position.x;
+        _endPos = _startPos + UnitsToMove;
+        _isFacingRight = transform.localScale.x > 0; 
+    }
 
     public bool DoRayCollisionCheck()
     {
@@ -45,5 +61,33 @@ public class Enemy : MonoBehaviour
         if (playerx < enemyx)
             print("player is on the left");
         else print("player is on the right");
+
+        if(_moveRight)
+    
+            enemyRigidBody2D.AddForce(Vector2.right * EnemySpeed * Time.deltaTime);
+            if (!_isFacingRight)
+                Flip();
+        
+
+        if (enemyRigidBody2D.position.x >= _endPos)
+            _moveRight = false;
+
+        if (!_moveRight)
+        {
+            enemyRigidBody2D.AddForce(-Vector2.right * EnemySpeed * Time.deltaTime);
+            if (_isFacingRight)
+                Flip();
+        }
+        if (enemyRigidBody2D.position.x <= _startPos)
+            _moveRight = true;
+
     }
+
+    public void Flip()
+    {
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        _isFacingRight = transform.localScale.x > 0;
+    }
+
+
 }
