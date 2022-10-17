@@ -67,7 +67,6 @@ public class Enemy : MonoBehaviour
             enemyRigidBody2D.AddForce(Vector2.right * EnemySpeed * Time.deltaTime);
             if (!_isFacingRight)
                 Flip();
-        
 
         if (enemyRigidBody2D.position.x >= _endPos)
             _moveRight = false;
