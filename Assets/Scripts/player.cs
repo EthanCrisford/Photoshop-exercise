@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Net.Security;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class player : MonoBehaviour
 {
     Rigidbody2D rb;
     public int speed;
